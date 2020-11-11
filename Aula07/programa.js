@@ -84,13 +84,13 @@ async function main(evt){
     // 8.1 - Model
     modelUniform = gl.getUniformLocation(shaderProgram, "model");
     
-    model = mat4.fromTranslation([],[1,-3,0]);
+    //model = mat4.fromTranslation([],[1,-3,0]);
     model2 = mat4.fromTranslation([],[0,0,0]);
     
     gl.uniformMatrix4fv(modelUniform, false, new Float32Array(model));
 
     // 8.2 - View
-    view = mat4.lookAt([], [0, -100 , 5], [0.0, 0.0, 0.0], [0,-1,0]);
+    view = mat4.lookAt([], [0, -100 , 1], [0.0, 0.0, 0.0], [0,-1,0]);
     viewUniform = gl.getUniformLocation(shaderProgram, "view");
     gl.uniformMatrix4fv(viewUniform, false, new Float32Array(view));
 
@@ -310,12 +310,12 @@ function andar(evt){
     if(evt.key === "a") px = 1;
     if(evt.key === "d") px = -1;
 
-    if(evt.key === "ArrowDown") dx = Math.PI * 0.1;
+    /*if(evt.key === "ArrowDown") dx = Math.PI * 0.1;
     if(evt.key === "ArrowUp") dx = Math.PI * -0.1;
     if(evt.key === "ArrowRight") dy = Math.PI * 0.1;
-    if(evt.key === "ArrowLeft") dy = Math.PI * -0.1;
+    if(evt.key === "ArrowLeft") dy = Math.PI * -0.1;*/
     
-    model2 = mat4.rotateY([], model2, dy);
-    model2 = mat4.rotateX([], model2, dx);
+    /*model2 = mat4.rotateY([], model2, dy);
+    model2 = mat4.rotateX([], model2, dx);*/
     model2 = mat4.translate([], model2, [px,0,pz]);
 }

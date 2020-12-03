@@ -29,9 +29,12 @@ let canvas, // área de desenho
   modelUniform,
   view,
   viewUniform,
+  placar,
   px = 0,
   pz = 0,
-  dir = 0;
+  dir = 0,
+  comeu = false,
+  score = 0;
 
 var snake = [
   [0, 0],
@@ -45,7 +48,6 @@ var direcao = [0, 2];
 async function main(evt) {
   // 1 - Criar uma área de desenho
   canvas = createCanvas();
-
   // 2 - Carregar a API do WebGL (OpenGL)
   gl = loadGL();
 
@@ -338,10 +340,11 @@ function resize() {
   height = window.innerHeight;
   aspect = width / height;
   if (canvas) {
-    canvas.setAttribute("width", width);
-    canvas.setAttribute("height", height);
+    canvas.setAttribute("width", width - 50);
+    canvas.setAttribute("height", height - 50);
   }
-  if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+  if (gl)
+    gl.viewport(width / 5, height / 5, canvas.width * 0.5, canvas.height * 0.5);
 
   if (projectionUniform) {
     projection = mat4.perspective([], 0.3 * Math.PI, aspect, 0.01, 100);
@@ -384,15 +387,12 @@ function movimento() {
     snake[0][0] + direcao[0], //x
     snake[0][1] + direcao[1], //y
   ];
-
-  console.log(frame);
   colision();
   SelfColide();
 }
 
 function crescer() {
   snake.push([...snake[snake.length - 1]]);
-  console.log(snake.length);
   data.partes.push(
     new Parte([
       snake[snake.length - 1][0],
@@ -406,7 +406,17 @@ function colision() {
   if (snake[0][0] == fruta[0] && snake[0][1] == fruta[1]) {
     fruta = moveFruta();
     crescer();
+    comeu = true;
     frutaModel = mat4.fromTranslation([], [fruta[0], fruta[1], 0]);
+    pontua();
+  }
+}
+
+function pontua() {
+  if (comeu) {
+    score += 5;
+    comeu = false;
+    console.log(score);
   }
 }
 
